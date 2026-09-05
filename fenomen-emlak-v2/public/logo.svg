@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80">
+  <path d="M18 46 L40 26 L62 46 L62 68 L18 68 Z" fill="none" stroke="#1e293b" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M30 42 L40 32 L50 42" fill="none" stroke="#e11d48" stroke-width="5" stroke-linejoin="round"/>
+  <rect x="28" y="14" width="7" height="18" fill="#e11d48"/>
+  <rect x="39" y="8" width="8" height="24" fill="#e11d48"/>
+  <text x="80" y="52" font-family="Outfit, sans-serif" font-weight="800" font-size="30"><tspan fill="#e11d48">fenomen</tspan><tspan fill="#1e293b">emlak</tspan></text>
+</svg>
