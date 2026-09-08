@@ -395,7 +395,7 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
         <div>
           <label className="block text-xs font-bold text-slate-700 mb-2">Özel Etiketler</label>
           <div className="flex flex-wrap gap-2">
-            {["Öne Çıkan", "Acil Satılık", "Fırsat İlan", "Deniz Manzaralı", "Yeni", "Fiyatı Düştü"].map((b) => {
+            {["Öne Çıkan", "Acil Satılık", "Acil Kiralık", "Fırsat İlan", "Deniz Manzaralı", "Yeni", "Fiyatı Düştü"].map((b) => {
               const active = badges.includes(b);
               return (
                 <button
