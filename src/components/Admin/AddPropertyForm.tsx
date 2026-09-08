@@ -274,7 +274,8 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
             <select value={status} onChange={(e) => setStatus(e.target.value)} className={inputCls}>
               <option value="Satılık">Satılık</option>
               <option value="Kiralık">Kiralık</option>
-              <option value="Günlük Kiralık">Günlük Kiralık</option>
+              <option value="Devren Satılık">Devren Satılık</option>
+              <option value="Devren Kiralık">Devren Kiralık</option>
             </select>
           </div>
           <div>
