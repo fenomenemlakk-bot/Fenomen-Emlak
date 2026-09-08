@@ -41,7 +41,7 @@ export default function FilterSidebar({ isOpen, onClose }: Props) {
           <div>
             <label className="block text-xs font-bold uppercase text-slate-500 mb-2">İlan Durumu</label>
             <div className="grid grid-cols-3 gap-2">
-              {["Tümü", "Satılık", "Kiralık"].map((s) => (
+              {["Tümü", "Satılık", "Kiralık", "Devren Satılık", "Devren Kiralık"].map((s) => (
                 <button
                   key={s}
                   onClick={() => setFilters((p) => ({ ...p, status: s }))}
