@@ -76,6 +76,8 @@ export default function HeroSearch({ onOpenFilterDrawer }: Props) {
           <div className="flex items-center gap-2 border-b border-slate-200 pb-3 mb-4 overflow-x-auto scrollbar-none">
             {tabBtn("Satılık")}
             {tabBtn("Kiralık")}
+            {tabBtn("Devren Satılık")}
+            {tabBtn("Devren Kiralık")}
             {tabBtn("Tümü")}
           </div>
           <form onSubmit={onSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
