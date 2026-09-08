@@ -1,4 +1,4 @@
-export type PropertyStatus = "Satılık" | "Kiralık" | "Günlük Kiralık";
+export type PropertyStatus = "Satılık" | "Kiralık" | "Devren Satılık" | "Devren Kiralık";
 
 export interface PropertySpecs {
   grossM2: number;
