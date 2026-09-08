@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Image as ImageIcon, Upload, Trash2, CheckCircle2 } from "lucide-react";
+import { Image as ImageIcon, Upload, Trash2, CheckCircle2, Loader2 } from "lucide-react";
 import { useProperties } from "../../context/PropertyContext";
+import { supabaseBrowser } from "../../lib/supabaseBrowser";
 import type { Property } from "../../types";
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
-  const { addProperty, updateProperty, showToast } = useProperties();
+  const { addProperty, updateProperty, showToast, adminPassword } = useProperties();
   const p = editProperty;
 
   const [title, setTitle] = useState(p?.title || "");
@@ -39,24 +40,58 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
   const [badges, setBadges] = useState<string[]>(p?.badges || ["Öne Çıkan"]);
   const [images, setImages] = useState<string[]>(p?.images || []);
   const [urlInput, setUrlInput] = useState("");
+  const [uploading, setUploading] = useState(false);
 
-  const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadOneFile = async (file: File): Promise<string> => {
+    const res = await fetch("/api/upload-url", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(adminPassword ? { "x-admin-password": adminPassword } : {}),
+      },
+      body: JSON.stringify({ fileName: file.name, fileType: file.type }),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body?.error || `Yükleme adresi alınamadı (${res.status})`);
+    }
+    const { path, token, publicUrl } = await res.json();
+    if (!supabaseBrowser) {
+      throw new Error("Depolama bağlantısı yapılandırılmamış (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY eksik).");
+    }
+    const { error } = await supabaseBrowser.storage
+      .from("property-images")
+      .uploadToSignedUrl(path, token, file);
+    if (error) throw error;
+    return publicUrl as string;
+  };
+
+  const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    const collected: string[] = [];
-    let done = 0;
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        if (ev.target?.result) collected.push(ev.target.result as string);
-        done++;
-        if (done === files.length) {
-          setImages((prev) => [...prev, ...collected]);
-          showToast(`${files.length} adet resim bilgisayarınızdan başarıyla yüklendi!`);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    setUploading(true);
+    const fileList = Array.from(files);
+    const uploaded: string[] = [];
+    let failed = 0;
+    for (const file of fileList) {
+      try {
+        const url = await uploadOneFile(file);
+        uploaded.push(url);
+      } catch (err) {
+        console.error("Resim yüklenemedi:", err);
+        failed++;
+      }
+    }
+    if (uploaded.length > 0) {
+      setImages((prev) => [...prev, ...uploaded]);
+    }
+    if (failed > 0) {
+      showToast(`${uploaded.length} resim yüklendi, ${failed} resim yüklenemedi.`);
+    } else {
+      showToast(`${uploaded.length} adet resim başarıyla yüklendi!`);
+    }
+    setUploading(false);
+    e.target.value = "";
   };
 
   const addUrl = () => {
@@ -173,11 +208,27 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
           </button>
         </div>
         <div className="relative border-2 border-dashed border-slate-300 hover:border-rose-500 rounded-2xl p-6 text-center bg-white transition-colors">
-          <input type="file" accept="image/*" multiple onChange={onFile} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={onFile}
+            disabled={uploading}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
+          />
           <div className="space-y-2 pointer-events-none">
-            <Upload className="w-10 h-10 text-rose-600 mx-auto animate-bounce" />
-            <div className="text-sm font-bold text-slate-900">Bilgisayarınızdan Fotoğraf Seçmek İçin Tıklayın veya Sürükleyin</div>
-            <p className="text-xs text-slate-500 font-medium">JPG, PNG, WEBP formatları desteklenir. Birden fazla resim seçebilirsiniz.</p>
+            {uploading ? (
+              <>
+                <Loader2 className="w-10 h-10 text-rose-600 mx-auto animate-spin" />
+                <div className="text-sm font-bold text-slate-900">Fotoğraflar yükleniyor, lütfen bekleyin...</div>
+              </>
+            ) : (
+              <>
+                <Upload className="w-10 h-10 text-rose-600 mx-auto animate-bounce" />
+                <div className="text-sm font-bold text-slate-900">Bilgisayarınızdan Fotoğraf Seçmek İçin Tıklayın veya Sürükleyin</div>
+                <p className="text-xs text-slate-500 font-medium">JPG, PNG, WEBP formatları desteklenir. Birden fazla resim seçebilirsiniz.</p>
+              </>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">

@@ -100,6 +100,7 @@ interface PropertyContextValue {
   adminLogin: (pw: string) => Promise<boolean>;
   adminLogout: () => void;
   adminAuthLoading: boolean;
+  adminPassword: string | null;
   showAdminModal: boolean;
   setShowAdminModal: (v: boolean) => void;
   showAdminDashboardModal: boolean;
@@ -438,6 +439,7 @@ export const PropertyProvider = ({ children }: { children: ReactNode }) => {
         adminLogin,
         adminLogout,
         adminAuthLoading,
+        adminPassword,
         showAdminModal,
         setShowAdminModal,
         showAdminDashboardModal,
