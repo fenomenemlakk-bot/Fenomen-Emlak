@@ -339,7 +339,7 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
           <div>
             <label className={labelCls}>Bina Yaşı</label>
             <select value={buildingAge} onChange={(e) => setBuildingAge(e.target.value)} className={`${smallInputCls} font-semibold`}>
-              {["0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "16-20 Yaş","21-25 Yaş","26-30 Yaş","30+ Yaş"].map((a) => (
+              {["0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "16-20 Yaş","21-25 Yaş","26-30 Yaş","30 ve Üzeri Yaş"].map((a) => (
                 <option key={a} value={a}>{a}</option>
               ))}
             </select>
