@@ -331,7 +331,7 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
           <div>
             <label className={labelCls}>Oda Sayısı</label>
             <select value={roomCount} onChange={(e) => setRoomCount(e.target.value)} className={`${smallInputCls} font-semibold`}>
-              {["1+1", "2+1", "3+1", "4+1", "5+1", "Müstakil", "Arsa"].map((r) => (
+              {["1+1", "2+1", "3+1", "4+1", "5+1", "6+1", "7+1", "Müstakil", "Arsa"].map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
             </select>
@@ -339,7 +339,7 @@ export default function AddPropertyForm({ editProperty, onSuccess }: Props) {
           <div>
             <label className={labelCls}>Bina Yaşı</label>
             <select value={buildingAge} onChange={(e) => setBuildingAge(e.target.value)} className={`${smallInputCls} font-semibold`}>
-              {["0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "20+ Yaş"].map((a) => (
+              {["0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "16-20 Yaş","21-25 Yaş","26-30 Yaş","30+ Yaş"].map((a) => (
                 <option key={a} value={a}>{a}</option>
               ))}
             </select>
