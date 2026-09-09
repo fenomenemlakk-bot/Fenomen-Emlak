@@ -13,7 +13,7 @@ export default function FilterSidebar({ isOpen, onClose }: Props) {
   const rooms = ["1+1", "2+1", "3+1", "4+1", "5+1", "6+1", "7+1", "Müstakil"];
   const districts = ["Tümü", "Merkez", "Erkmen", "İhsaniye (Gazlıgöl)", "Sandıklı", "Bolvadin", "Dinar"];
   const cats = ["Tümü", "Daire", "Villa", "Müstakil Ev", "Arsa", "İşyeri"];
-  const ages = ["Tümü", "0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "16-20 Yaş", "21-25 Yaş", "26-30 Yaş", "30+ Yaş"];
+  const ages = ["Tümü", "0 (Sıfır)", "1-5 Yaş", "6-10 Yaş", "11-15 Yaş", "16-20 Yaş", "21-25 Yaş", "26-30 Yaş", "30 ve Üzeri Yaş"];
 
   const toggleRoom = (r: string) =>
     setFilters((p) => ({
